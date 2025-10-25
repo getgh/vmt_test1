@@ -13,11 +13,12 @@ class ExpenseController extends GetxController {
   Future<void> loadExpensesByVehicle(String vehicleId) async {
     try {
       isLoading.value = true;
-      expenses.value = _dbService.getExpensesByVehicle(vehicleId);
-      totalExpenses.value = _dbService.getTotalExpensesForVehicle(vehicleId);
-      expensesByCategory.value = _dbService.getExpensesByCategory(vehicleId);
+      final loadedExpenses = _dbService.getExpensesByVehicle(vehicleId);
+      print('Loaded ${loadedExpenses.length} expenses for vehicle $vehicleId');
+      expenses.value = loadedExpenses;
+      _updateTotals(vehicleId);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load expenses: $e');
+      print('Error loading expenses: $e');
     } finally {
       isLoading.value = false;
     }
@@ -29,12 +30,7 @@ class ExpenseController extends GetxController {
       await _dbService.addExpense(expense);
       expenses.add(expense);
       expenses.sort((a, b) => b.expenseDate.compareTo(a.expenseDate));
-      totalExpenses.value += expense.amount;
-      
-      // Update category totals
-      expensesByCategory[expense.category] = 
-          (expensesByCategory[expense.category] ?? 0) + expense.amount;
-      
+      _updateTotals(expense.vehicleId);
       Get.snackbar('Success', 'Expense added successfully');
     } catch (e) {
       Get.snackbar('Error', 'Failed to add expense: $e');
@@ -52,16 +48,7 @@ class ExpenseController extends GetxController {
         expenses[index] = expense;
         expenses.sort((a, b) => b.expenseDate.compareTo(a.expenseDate));
       }
-      
-      // Update totals
-      totalExpenses.value = totalExpenses.value - oldExpense.amount + expense.amount;
-      
-      // Update category totals
-      expensesByCategory[oldExpense.category] = 
-          (expensesByCategory[oldExpense.category] ?? 0) - oldExpense.amount;
-      expensesByCategory[expense.category] = 
-          (expensesByCategory[expense.category] ?? 0) + expense.amount;
-      
+      _updateTotals(expense.vehicleId);
       Get.snackbar('Success', 'Expense updated successfully');
     } catch (e) {
       Get.snackbar('Error', 'Failed to update expense: $e');
@@ -77,12 +64,7 @@ class ExpenseController extends GetxController {
       if (expense != null) {
         await _dbService.deleteExpense(expenseId);
         expenses.removeWhere((e) => e.id == expenseId);
-        totalExpenses.value -= expense.amount;
-        
-        // Update category totals
-        expensesByCategory[expense.category] = 
-            (expensesByCategory[expense.category] ?? 0) - expense.amount;
-        
+        _updateTotals(expense.vehicleId);
         Get.snackbar('Success', 'Expense deleted successfully');
       }
     } catch (e) {
@@ -90,6 +72,18 @@ class ExpenseController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void _updateTotals(String vehicleId) {
+    final total = _dbService.getTotalExpensesForVehicle(vehicleId);
+    print('Calculated total expenses for vehicle $vehicleId: $total');
+    totalExpenses.value = total;
+    
+    final categories = _dbService.getExpensesByCategory(vehicleId);
+    print('Categories: $categories');
+    expensesByCategory.value = categories;
+    expensesByCategory.refresh();
+    totalExpenses.refresh();
   }
 
   double getMonthlyExpenses(int month, int year) {

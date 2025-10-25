@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../controllers/maintenance_controller.dart';
+import '../controllers/expense_controller.dart';
 import '../models/vehicle.dart';
 import '../models/maintenance_log.dart';
 import '../theme/app_theme.dart';
@@ -19,6 +20,7 @@ class MaintenanceLogScreen extends StatefulWidget {
 
 class _MaintenanceLogScreenState extends State<MaintenanceLogScreen> {
   final maintenanceController = Get.find<MaintenanceController>();
+  final expenseController = Get.find<ExpenseController>();
   bool _isAddingLog = false;
 
   final List<String> serviceTypes = [
@@ -79,7 +81,7 @@ class _MaintenanceLogScreenState extends State<MaintenanceLogScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.build_outline, size: 64, color: AppTheme.darkGray),
+              Icon(Icons.build, size: 64, color: AppTheme.darkGray),
               const SizedBox(height: 16),
               Text(
                 'No maintenance logs found',
@@ -242,7 +244,9 @@ class _MaintenanceLogScreenState extends State<MaintenanceLogScreen> {
                         description: description.isEmpty ? null : description,
                         invoiceNumber: invoiceNumber.isEmpty ? null : invoiceNumber,
                       );
-                      maintenanceController.addMaintenanceLog(log);
+                      await maintenanceController.addMaintenanceLog(log, widget.vehicle);
+                      // Refresh expenses after adding maintenance log
+                      await expenseController.loadExpensesByVehicle(widget.vehicle.id);
                       setState(() => _isAddingLog = false);
                     },
                     child: const Text('Save'),

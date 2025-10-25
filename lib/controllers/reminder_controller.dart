@@ -11,13 +11,35 @@ class ReminderController extends GetxController {
   final RxBool isLoading = false.obs;
 
   Future<void> loadRemindersByVehicle(String vehicleId) async {
+    if (vehicleId.isEmpty) {
+      reminders.value = [];
+      upcomingReminders.value = [];
+      overdueReminders.value = [];
+      return;
+    }
+    
     try {
       isLoading.value = true;
-      reminders.value = _dbService.getRemindersByVehicle(vehicleId);
-      upcomingReminders.value = _dbService.getUpcomingReminders(vehicleId);
-      overdueReminders.value = _dbService.getOverdueReminders(vehicleId);
+      final allReminders = _dbService.getRemindersByVehicle(vehicleId);
+      reminders.value = allReminders;
+      
+      // Calculate upcoming and overdue
+      final now = DateTime.now();
+      upcomingReminders.value = allReminders
+          .where((reminder) =>
+              reminder.isActive &&
+              reminder.reminderDate.isAfter(now))
+          .toList()
+          ..sort((a, b) => a.reminderDate.compareTo(b.reminderDate));
+      
+      overdueReminders.value = allReminders
+          .where((reminder) => reminder.isOverdue)
+          .toList();
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load reminders: $e');
+      print('Error loading reminders: $e');
+      reminders.value = [];
+      upcomingReminders.value = [];
+      overdueReminders.value = [];
     } finally {
       isLoading.value = false;
     }
@@ -29,6 +51,7 @@ class ReminderController extends GetxController {
       await _dbService.addReminder(reminder);
       reminders.add(reminder);
       reminders.sort((a, b) => a.reminderDate.compareTo(b.reminderDate));
+      _updateReminderLists();
       Get.snackbar('Success', 'Reminder added successfully');
     } catch (e) {
       Get.snackbar('Error', 'Failed to add reminder: $e');
@@ -46,6 +69,7 @@ class ReminderController extends GetxController {
         reminders[index] = reminder;
         reminders.sort((a, b) => a.reminderDate.compareTo(b.reminderDate));
       }
+      _updateReminderLists();
       Get.snackbar('Success', 'Reminder updated successfully');
     } catch (e) {
       Get.snackbar('Error', 'Failed to update reminder: $e');
@@ -59,6 +83,7 @@ class ReminderController extends GetxController {
       isLoading.value = true;
       await _dbService.deleteReminder(reminderId);
       reminders.removeWhere((r) => r.id == reminderId);
+      _updateReminderLists();
       Get.snackbar('Success', 'Reminder deleted successfully');
     } catch (e) {
       Get.snackbar('Error', 'Failed to delete reminder: $e');
@@ -72,11 +97,32 @@ class ReminderController extends GetxController {
       final reminder = _dbService.getReminder(reminderId);
       if (reminder != null) {
         reminder.isActive = !reminder.isActive;
-        await updateReminder(reminder);
+        await _dbService.updateReminder(reminder);
+        final index = reminders.indexWhere((r) => r.id == reminder.id);
+        if (index != -1) {
+          reminders[index] = reminder;
+        }
+        _updateReminderLists();
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to toggle reminder: $e');
     }
+  }
+
+  void _updateReminderLists() {
+    // Update upcoming reminders
+    final now = DateTime.now();
+    upcomingReminders.value = reminders
+        .where((reminder) =>
+            reminder.isActive &&
+            reminder.reminderDate.isAfter(now))
+        .toList()
+        ..sort((a, b) => a.reminderDate.compareTo(b.reminderDate));
+    
+    // Update overdue reminders
+    overdueReminders.value = reminders
+        .where((reminder) => reminder.isOverdue)
+        .toList();
   }
 
   int get totalReminders => reminders.length;

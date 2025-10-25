@@ -11,6 +11,7 @@ import '../widgets/reminder_card.dart';
 import 'vehicle_info_screen.dart';
 import 'maintenance_log_screen.dart';
 import 'profile_management_screen.dart';
+import 'reminder_setup_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -28,7 +29,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    _refreshDashboard();
+    // Defer loading to next frame to ensure selectedVehicle is set
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _refreshDashboard();
+      
+      // Listen for vehicle changes
+      vehicleController.selectedVehicle.listen((vehicle) {
+        if (vehicle != null) {
+          print('Vehicle changed to ${vehicle.id}, refreshing expenses');
+          expenseController.loadExpensesByVehicle(vehicle.id);
+        }
+      });
+    });
   }
 
   void _refreshDashboard() async {
@@ -284,7 +296,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         );
       }),
       floatingActionButton: Obx(() {
-        if (vehicleController.selectedVehicle.value == null) return null;
+        if (vehicleController.selectedVehicle.value == null) return const SizedBox.shrink();
         return FloatingActionButton(
           onPressed: () => Get.to(
             () => MaintenanceLogScreen(vehicle: vehicleController.selectedVehicle.value!),
@@ -396,7 +408,6 @@ class ReminderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.find<ReminderController>().loadRemindersByVehicle(vehicle.id);
-    return const Placeholder();
+    return ReminderSetupScreen(vehicle: vehicle);
   }
 }

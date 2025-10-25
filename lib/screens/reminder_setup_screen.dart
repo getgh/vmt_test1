@@ -117,7 +117,7 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen> with SingleTi
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.calendar_outline, size: 64, color: AppTheme.darkGray),
+            Icon(Icons.calendar_today, size: 64, color: AppTheme.darkGray),
             const SizedBox(height: 16),
             Text(
               emptyMessage,

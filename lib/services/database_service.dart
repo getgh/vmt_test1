@@ -87,37 +87,57 @@ class DatabaseService {
   }
 
   List<Reminder> getRemindersByVehicle(String vehicleId) {
-    final box = Hive.box<Reminder>(remindersBox);
-    return box.values
-        .where((reminder) => reminder.vehicleId == vehicleId)
-        .toList()
-        ..sort((a, b) => a.reminderDate.compareTo(b.reminderDate));
+    try {
+      final box = Hive.box<Reminder>(remindersBox);
+      return box.values
+          .where((reminder) => reminder.vehicleId == vehicleId)
+          .toList()
+          ..sort((a, b) => a.reminderDate.compareTo(b.reminderDate));
+    } catch (e) {
+      print('Error getting reminders: $e');
+      return [];
+    }
   }
 
   List<Reminder> getUpcomingReminders(String vehicleId) {
-    final box = Hive.box<Reminder>(remindersBox);
-    final now = DateTime.now();
-    return box.values
-        .where((reminder) =>
-            reminder.vehicleId == vehicleId &&
-            reminder.isActive &&
-            reminder.reminderDate.isAfter(now))
-        .toList()
-        ..sort((a, b) => a.reminderDate.compareTo(b.reminderDate));
+    try {
+      final box = Hive.box<Reminder>(remindersBox);
+      final now = DateTime.now();
+      return box.values
+          .where((reminder) =>
+              reminder.vehicleId == vehicleId &&
+              reminder.isActive &&
+              reminder.reminderDate.isAfter(now))
+          .toList()
+          ..sort((a, b) => a.reminderDate.compareTo(b.reminderDate));
+    } catch (e) {
+      print('Error getting upcoming reminders: $e');
+      return [];
+    }
   }
 
   List<Reminder> getOverdueReminders(String vehicleId) {
-    final box = Hive.box<Reminder>(remindersBox);
-    return box.values
-        .where((reminder) =>
-            reminder.vehicleId == vehicleId &&
-            reminder.isOverdue)
-        .toList();
+    try {
+      final box = Hive.box<Reminder>(remindersBox);
+      return box.values
+          .where((reminder) =>
+              reminder.vehicleId == vehicleId &&
+              reminder.isOverdue)
+          .toList();
+    } catch (e) {
+      print('Error getting overdue reminders: $e');
+      return [];
+    }
   }
 
   Reminder? getReminder(String reminderId) {
-    final box = Hive.box<Reminder>(remindersBox);
-    return box.get(reminderId);
+    try {
+      final box = Hive.box<Reminder>(remindersBox);
+      return box.get(reminderId);
+    } catch (e) {
+      print('Error getting reminder: $e');
+      return null;
+    }
   }
 
   // Expense Operations
@@ -137,11 +157,21 @@ class DatabaseService {
   }
 
   List<Expense> getExpensesByVehicle(String vehicleId) {
-    final box = Hive.box<Expense>(expensesBox);
-    return box.values
-        .where((expense) => expense.vehicleId == vehicleId)
-        .toList()
-        ..sort((a, b) => b.expenseDate.compareTo(a.expenseDate));
+    try {
+      final box = Hive.box<Expense>(expensesBox);
+      final expenses = box.values
+          .where((expense) => expense.vehicleId == vehicleId)
+          .toList()
+          ..sort((a, b) => b.expenseDate.compareTo(a.expenseDate));
+      print('Database - Loaded ${expenses.length} expenses for vehicle $vehicleId');
+      for (var exp in expenses) {
+        print('  - Expense: ${exp.category} - \$${exp.amount}');
+      }
+      return expenses;
+    } catch (e) {
+      print('Error getting expenses for vehicle $vehicleId: $e');
+      return [];
+    }
   }
 
   List<Expense> getExpensesByMaintenanceLog(String maintenanceLogId) {
@@ -152,22 +182,35 @@ class DatabaseService {
   }
 
   double getTotalExpensesForVehicle(String vehicleId) {
-    final box = Hive.box<Expense>(expensesBox);
-    return box.values
-        .where((expense) => expense.vehicleId == vehicleId)
-        .fold(0.0, (sum, expense) => sum + expense.amount);
+    try {
+      final box = Hive.box<Expense>(expensesBox);
+      final total = box.values
+          .where((expense) => expense.vehicleId == vehicleId)
+          .fold(0.0, (sum, expense) => sum + expense.amount);
+      print('Database - Total expenses for $vehicleId: $total, count: ${box.values.length}');
+      return total;
+    } catch (e) {
+      print('Error calculating total expenses: $e');
+      return 0.0;
+    }
   }
 
   Map<String, double> getExpensesByCategory(String vehicleId) {
-    final expenses = getExpensesByVehicle(vehicleId);
-    final Map<String, double> categoryExpenses = {};
-    
-    for (var expense in expenses) {
-      categoryExpenses[expense.category] =
-          (categoryExpenses[expense.category] ?? 0) + expense.amount;
+    try {
+      final expenses = getExpensesByVehicle(vehicleId);
+      final Map<String, double> categoryExpenses = {};
+      
+      for (var expense in expenses) {
+        categoryExpenses[expense.category] =
+            (categoryExpenses[expense.category] ?? 0) + expense.amount;
+      }
+      
+      print('Database - Categories for $vehicleId: $categoryExpenses');
+      return categoryExpenses;
+    } catch (e) {
+      print('Error calculating category expenses: $e');
+      return {};
     }
-    
-    return categoryExpenses;
   }
 
   Expense? getExpense(String expenseId) {
@@ -189,7 +232,7 @@ class DatabaseService {
     }
 
     // Delete reminders
-    final remindersBox = Hive.box<Reminder>(remindersBox);
+    final remindersBox = Hive.box<Reminder>('reminders');
     final remindersToDelete = remindersBox.values
         .where((reminder) => reminder.vehicleId == vehicleId)
         .map((reminder) => reminder.id)
@@ -200,7 +243,7 @@ class DatabaseService {
     }
 
     // Delete expenses
-    final expensesBox = Hive.box<Expense>(expensesBox);
+    final expensesBox = Hive.box<Expense>('expenses');
     final expensesToDelete = expensesBox.values
         .where((expense) => expense.vehicleId == vehicleId)
         .map((expense) => expense.id)

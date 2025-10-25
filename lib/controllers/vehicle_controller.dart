@@ -49,6 +49,7 @@ class VehicleController extends GetxController {
       final index = vehicles.indexWhere((v) => v.id == vehicle.id);
       if (index != -1) {
         vehicles[index] = vehicle;
+        vehicles.refresh();
       }
       if (selectedVehicle.value?.id == vehicle.id) {
         selectedVehicle.value = vehicle;
