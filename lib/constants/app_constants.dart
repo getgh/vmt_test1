@@ -1,18 +1,16 @@
-import 'package:flutter/material.dart';
-
 class AppConstants {
   // App Name
   static const String appName = 'Vehicle Maintenance Tracker';
-  
+
   // API timeout
   static const Duration apiTimeout = Duration(seconds: 30);
-  
+
   // Database
   static const String vehiclesBoxName = 'vehicles';
   static const String maintenanceLogsBoxName = 'maintenance_logs';
   static const String remindersBoxName = 'reminders';
   static const String expensesBoxName = 'expenses';
-  
+
   // Service Types
   static const List<String> serviceTypes = [
     'Oil Change',
@@ -25,7 +23,7 @@ class AppConstants {
     'Alignment',
     'Other',
   ];
-  
+
   // Expense Categories
   static const List<String> expenseCategories = [
     'Oil Change',
@@ -35,7 +33,7 @@ class AppConstants {
     'Inspection',
     'Other',
   ];
-  
+
   // Payment Methods
   static const List<String> paymentMethods = [
     'Cash',

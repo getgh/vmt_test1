@@ -5,7 +5,6 @@ import '../controllers/maintenance_controller.dart';
 import '../controllers/reminder_controller.dart';
 import '../controllers/expense_controller.dart';
 import '../theme/app_theme.dart';
-import '../widgets/vehicle_card.dart';
 import '../widgets/maintenance_card.dart';
 import '../widgets/reminder_card.dart';
 import 'vehicle_info_screen.dart';
@@ -14,7 +13,7 @@ import 'profile_management_screen.dart';
 import 'reminder_setup_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+  const DashboardScreen({super.key});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -32,11 +31,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // Defer loading to next frame to ensure selectedVehicle is set
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshDashboard();
-      
+
       // Listen for vehicle changes
       vehicleController.selectedVehicle.listen((vehicle) {
         if (vehicle != null) {
-          print('Vehicle changed to ${vehicle.id}, refreshing expenses');
+          debugPrint('Vehicle changed to ${vehicle.id}, refreshing expenses');
           expenseController.loadExpensesByVehicle(vehicle.id);
         }
       });
@@ -76,7 +75,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.directions_car_outlined, size: 64, color: AppTheme.darkGray),
+                Icon(
+                  Icons.directions_car_outlined,
+                  size: 64,
+                  color: AppTheme.darkGray,
+                ),
                 const SizedBox(height: 16),
                 Text(
                   'No vehicles found',
@@ -84,7 +87,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () => Get.to(() => const ProfileManagementScreen()),
+                  onPressed: () =>
+                      Get.to(() => const ProfileManagementScreen()),
                   child: const Text('Add a Vehicle'),
                 ),
               ],
@@ -122,7 +126,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           backgroundColor: AppTheme.lightGray,
                           selectedColor: AppTheme.primaryGreen,
                           labelStyle: TextStyle(
-                            color: isSelected ? AppTheme.primaryWhite : AppTheme.primaryBlack,
+                            color: isSelected
+                                ? AppTheme.primaryWhite
+                                : AppTheme.primaryBlack,
                           ),
                         ),
                       );
@@ -143,7 +149,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         gradient: LinearGradient(
-                          colors: [AppTheme.primaryBlack, AppTheme.primaryBlack.withOpacity(0.8)],
+                          colors: [
+                            AppTheme.primaryBlack,
+                            AppTheme.primaryBlack.withOpacity(0.8),
+                          ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
@@ -153,9 +162,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         children: [
                           Text(
                             vehicle.displayName,
-                            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                              color: AppTheme.primaryWhite,
-                            ),
+                            style: Theme.of(context).textTheme.displayMedium
+                                ?.copyWith(color: AppTheme.primaryWhite),
                           ),
                           const SizedBox(height: 12),
                           Row(
@@ -166,15 +174,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 children: [
                                   Text(
                                     'License Plate',
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: AppTheme.primaryWhite.withOpacity(0.7),
-                                    ),
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(
+                                          color: AppTheme.primaryWhite
+                                              .withOpacity(0.7),
+                                        ),
                                   ),
                                   Text(
                                     vehicle.licensePlate,
-                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      color: AppTheme.primaryWhite,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                          color: AppTheme.primaryWhite,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -183,15 +196,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 children: [
                                   Text(
                                     'Current Mileage',
-                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: AppTheme.primaryWhite.withOpacity(0.7),
-                                    ),
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(
+                                          color: AppTheme.primaryWhite
+                                              .withOpacity(0.7),
+                                        ),
                                   ),
                                   Text(
                                     '${vehicle.currentMileage.toStringAsFixed(0)} km',
-                                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                      color: AppTheme.primaryGreen,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                          color: AppTheme.primaryGreen,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -210,17 +228,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   title: 'Upcoming Reminders',
                   icon: Icons.calendar_today,
                   count: reminderController.upcomingReminders.length,
-                  onViewAll: () => Get.to(() => ReminderScreen(vehicle: vehicle)),
+                  onViewAll: () =>
+                      Get.to(() => ReminderScreen(vehicle: vehicle)),
                   child: Obx(() {
-                    final reminders = reminderController.upcomingReminders.take(3).toList();
+                    final reminders = reminderController.upcomingReminders
+                        .take(3)
+                        .toList();
                     if (reminders.isEmpty) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         child: Text(
                           'No upcoming reminders',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppTheme.darkGray,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: AppTheme.darkGray),
                         ),
                       );
                     }
@@ -235,7 +255,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             isOverdue: reminder.isOverdue,
                             onTap: () {},
                             onToggle: (value) {
-                              reminderController.toggleReminderActive(reminder.id);
+                              reminderController.toggleReminderActive(
+                                reminder.id,
+                              );
                             },
                           ),
                         );
@@ -256,15 +278,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     transition: Transition.rightToLeft,
                   ),
                   child: Obx(() {
-                    final logs = maintenanceController.maintenanceLogs.take(3).toList();
+                    final logs = maintenanceController.maintenanceLogs
+                        .take(3)
+                        .toList();
                     if (logs.isEmpty) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         child: Text(
                           'No maintenance logs',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppTheme.darkGray,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: AppTheme.darkGray),
                         ),
                       );
                     }
@@ -296,10 +319,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
         );
       }),
       floatingActionButton: Obx(() {
-        if (vehicleController.selectedVehicle.value == null) return const SizedBox.shrink();
+        if (vehicleController.selectedVehicle.value == null)
+          return const SizedBox.shrink();
         return FloatingActionButton(
           onPressed: () => Get.to(
-            () => MaintenanceLogScreen(vehicle: vehicleController.selectedVehicle.value!),
+            () => MaintenanceLogScreen(
+              vehicle: vehicleController.selectedVehicle.value!,
+            ),
             transition: Transition.rightToLeft,
           ),
           child: const Icon(Icons.add),
@@ -326,13 +352,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               children: [
                 Icon(icon, color: AppTheme.primaryGreen, size: 24),
                 const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
+                Text(title, style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(width: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: AppTheme.primaryRed,
                     borderRadius: BorderRadius.circular(12),
@@ -347,10 +373,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ],
             ),
-            TextButton(
-              onPressed: onViewAll,
-              child: const Text('View All'),
-            ),
+            TextButton(onPressed: onViewAll, child: const Text('View All')),
           ],
         ),
         const SizedBox(height: 12),
@@ -374,7 +397,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               Row(
                 children: [
-                  Icon(Icons.trending_up, color: AppTheme.primaryGreen, size: 24),
+                  Icon(
+                    Icons.trending_up,
+                    color: AppTheme.primaryGreen,
+                    size: 24,
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     'Total Expenses',
@@ -404,7 +431,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
 class ReminderScreen extends StatelessWidget {
   final dynamic vehicle;
-  const ReminderScreen({Key? key, required this.vehicle}) : super(key: key);
+  const ReminderScreen({super.key, required this.vehicle});
 
   @override
   Widget build(BuildContext context) {

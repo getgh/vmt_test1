@@ -11,7 +11,7 @@ class VehicleCard extends StatelessWidget {
   final VoidCallback? onDelete;
 
   const VehicleCard({
-    Key? key,
+    super.key,
     required this.make,
     required this.model,
     required this.year,
@@ -19,7 +19,7 @@ class VehicleCard extends StatelessWidget {
     required this.licensePlate,
     required this.onTap,
     this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,10 @@ class VehicleCard extends StatelessWidget {
                   ),
                   if (onDelete != null)
                     IconButton(
-                      icon: const Icon(Icons.delete_outline, color: AppTheme.primaryRed),
+                      icon: const Icon(
+                        Icons.delete_outline,
+                        color: AppTheme.primaryRed,
+                      ),
                       onPressed: onDelete,
                     ),
                 ],

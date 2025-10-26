@@ -11,7 +11,7 @@ class ReminderCard extends StatelessWidget {
   final VoidCallback? onDelete;
 
   const ReminderCard({
-    Key? key,
+    super.key,
     required this.serviceType,
     required this.reminderDate,
     required this.isActive,
@@ -19,12 +19,12 @@ class ReminderCard extends StatelessWidget {
     required this.onTap,
     required this.onToggle,
     this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final color = isOverdue ? AppTheme.primaryRed : AppTheme.primaryGreen;
-    
+
     return GestureDetector(
       onTap: onTap,
       child: Card(
@@ -33,7 +33,9 @@ class ReminderCard extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: color, width: 2),
-            color: isOverdue ? AppTheme.primaryRed.withOpacity(0.05) : AppTheme.primaryWhite,
+            color: isOverdue
+                ? AppTheme.primaryRed.withOpacity(0.05)
+                : AppTheme.primaryWhite,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,32 +51,40 @@ class ReminderCard extends StatelessWidget {
                           children: [
                             if (isOverdue)
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
                                   color: AppTheme.primaryRed,
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: Text(
                                   'OVERDUE',
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: AppTheme.primaryWhite,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        color: AppTheme.primaryWhite,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
                               )
                             else
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
                                   color: AppTheme.primaryGreen,
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: Text(
                                   'UPCOMING',
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: AppTheme.primaryWhite,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        color: AppTheme.primaryWhite,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
                               ),
                           ],
@@ -104,7 +114,10 @@ class ReminderCard extends StatelessWidget {
                       ),
                       if (onDelete != null)
                         IconButton(
-                          icon: const Icon(Icons.delete_outline, color: AppTheme.primaryRed),
+                          icon: const Icon(
+                            Icons.delete_outline,
+                            color: AppTheme.primaryRed,
+                          ),
                           iconSize: 20,
                           onPressed: onDelete,
                         ),

@@ -12,8 +12,7 @@ import '../widgets/maintenance_card.dart';
 class MaintenanceLogScreen extends StatefulWidget {
   final Vehicle vehicle;
 
-  const MaintenanceLogScreen({Key? key, required this.vehicle})
-    : super(key: key);
+  const MaintenanceLogScreen({super.key, required this.vehicle});
 
   @override
   State<MaintenanceLogScreen> createState() => _MaintenanceLogScreenState();

@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart' show debugPrint;
 import 'package:get/get.dart';
 import '../models/expense.dart';
 import '../services/database_service.dart';
 
 class ExpenseController extends GetxController {
   final DatabaseService _dbService = DatabaseService();
-  
+
   final RxList<Expense> expenses = <Expense>[].obs;
   final RxDouble totalExpenses = 0.0.obs;
   final RxMap<String, double> expensesByCategory = <String, double>{}.obs;
@@ -14,11 +15,13 @@ class ExpenseController extends GetxController {
     try {
       isLoading.value = true;
       final loadedExpenses = _dbService.getExpensesByVehicle(vehicleId);
-      print('Loaded ${loadedExpenses.length} expenses for vehicle $vehicleId');
+      debugPrint(
+        'Loaded ${loadedExpenses.length} expenses for vehicle $vehicleId',
+      );
       expenses.value = loadedExpenses;
       _updateTotals(vehicleId);
     } catch (e) {
-      print('Error loading expenses: $e');
+      debugPrint('Error loading expenses: $e');
     } finally {
       isLoading.value = false;
     }
@@ -76,11 +79,11 @@ class ExpenseController extends GetxController {
 
   void _updateTotals(String vehicleId) {
     final total = _dbService.getTotalExpensesForVehicle(vehicleId);
-    print('Calculated total expenses for vehicle $vehicleId: $total');
+    debugPrint('Calculated total expenses for vehicle $vehicleId: $total');
     totalExpenses.value = total;
-    
+
     final categories = _dbService.getExpensesByCategory(vehicleId);
-    print('Categories: $categories');
+    debugPrint('Categories: $categories');
     expensesByCategory.value = categories;
     expensesByCategory.refresh();
     totalExpenses.refresh();
@@ -88,7 +91,9 @@ class ExpenseController extends GetxController {
 
   double getMonthlyExpenses(int month, int year) {
     return expenses
-        .where((e) => e.expenseDate.month == month && e.expenseDate.year == year)
+        .where(
+          (e) => e.expenseDate.month == month && e.expenseDate.year == year,
+        )
         .fold(0.0, (sum, e) => sum + e.amount);
   }
 

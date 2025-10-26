@@ -10,27 +10,27 @@ import 'theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize Hive
   await Hive.initFlutter();
-  
+
   // Register Hive adapters
   Hive.registerAdapter(VehicleAdapter());
   Hive.registerAdapter(MaintenanceLogAdapter());
   Hive.registerAdapter(ReminderAdapter());
   Hive.registerAdapter(ExpenseAdapter());
-  
+
   // Open boxes
   await Hive.openBox<Vehicle>('vehicles');
   await Hive.openBox<MaintenanceLog>('maintenance_logs');
   await Hive.openBox<Reminder>('reminders');
   await Hive.openBox<Expense>('expenses');
-  
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

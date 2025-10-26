@@ -8,7 +8,7 @@ import '../theme/app_theme.dart';
 class VehicleInfoScreen extends StatefulWidget {
   final Vehicle? vehicle;
 
-  const VehicleInfoScreen({Key? key, this.vehicle}) : super(key: key);
+  const VehicleInfoScreen({super.key, this.vehicle});
 
   @override
   State<VehicleInfoScreen> createState() => _VehicleInfoScreenState();
@@ -36,9 +36,15 @@ class _VehicleInfoScreenState extends State<VehicleInfoScreen> {
   void _initializeControllers() {
     _makeController = TextEditingController(text: widget.vehicle?.make ?? '');
     _modelController = TextEditingController(text: widget.vehicle?.model ?? '');
-    _yearController = TextEditingController(text: widget.vehicle?.year.toString() ?? '');
-    _mileageController = TextEditingController(text: widget.vehicle?.currentMileage.toString() ?? '');
-    _licensePlateController = TextEditingController(text: widget.vehicle?.licensePlate ?? '');
+    _yearController = TextEditingController(
+      text: widget.vehicle?.year.toString() ?? '',
+    );
+    _mileageController = TextEditingController(
+      text: widget.vehicle?.currentMileage.toString() ?? '',
+    );
+    _licensePlateController = TextEditingController(
+      text: widget.vehicle?.licensePlate ?? '',
+    );
     _colorController = TextEditingController(text: widget.vehicle?.color ?? '');
     _notesController = TextEditingController(text: widget.vehicle?.notes ?? '');
   }
@@ -215,10 +221,7 @@ class _VehicleInfoScreenState extends State<VehicleInfoScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        Text(label, style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 8),
         TextField(
           controller: controller,

@@ -9,8 +9,7 @@ import '../widgets/expense_card.dart';
 class ExpenseTrackerScreen extends StatefulWidget {
   final Vehicle vehicle;
 
-  const ExpenseTrackerScreen({Key? key, required this.vehicle})
-    : super(key: key);
+  const ExpenseTrackerScreen({super.key, required this.vehicle});
 
   @override
   State<ExpenseTrackerScreen> createState() => _ExpenseTrackerScreenState();
@@ -283,7 +282,7 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen>
                         ],
                       ),
                     );
-                  }).toList(),
+                  }),
                 ],
               ),
             ),

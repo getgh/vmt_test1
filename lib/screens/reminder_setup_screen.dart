@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../controllers/reminder_controller.dart';
-import '../controllers/vehicle_controller.dart';
 import '../models/vehicle.dart';
 import '../models/reminder.dart';
 import '../theme/app_theme.dart';
@@ -12,13 +11,14 @@ import '../widgets/reminder_card.dart';
 class ReminderSetupScreen extends StatefulWidget {
   final Vehicle vehicle;
 
-  const ReminderSetupScreen({Key? key, required this.vehicle}) : super(key: key);
+  const ReminderSetupScreen({super.key, required this.vehicle});
 
   @override
   State<ReminderSetupScreen> createState() => _ReminderSetupScreenState();
 }
 
-class _ReminderSetupScreenState extends State<ReminderSetupScreen> with SingleTickerProviderStateMixin {
+class _ReminderSetupScreenState extends State<ReminderSetupScreen>
+    with SingleTickerProviderStateMixin {
   final reminderController = Get.find<ReminderController>();
   late TabController _tabController;
   bool _isAddingReminder = false;
@@ -73,10 +73,7 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen> with SingleTi
             ],
           ),
           if (_isAddingReminder)
-            Container(
-              color: Colors.black87,
-              child: _buildAddReminderForm(),
-            ),
+            Container(color: Colors.black87, child: _buildAddReminderForm()),
         ],
       ),
       floatingActionButton: !_isAddingReminder
@@ -164,18 +161,18 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen> with SingleTi
         children: [
           Text(
             'Add New Reminder',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: AppTheme.primaryWhite,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(color: AppTheme.primaryWhite),
           ),
           const SizedBox(height: 24),
 
           // Service Type
           Text(
             'Service Type',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: AppTheme.primaryWhite,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: AppTheme.primaryWhite),
           ),
           const SizedBox(height: 8),
           Container(
@@ -208,9 +205,9 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen> with SingleTi
           // Reminder Date
           Text(
             'Reminder Date',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: AppTheme.primaryWhite,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: AppTheme.primaryWhite),
           ),
           const SizedBox(height: 8),
           GestureDetector(
@@ -240,7 +237,10 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen> with SingleTi
                     DateFormat('yyyy-MM-dd').format(selectedDate),
                     style: const TextStyle(color: AppTheme.primaryWhite),
                   ),
-                  const Icon(Icons.calendar_today, color: AppTheme.primaryGreen),
+                  const Icon(
+                    Icons.calendar_today,
+                    color: AppTheme.primaryGreen,
+                  ),
                 ],
               ),
             ),
@@ -250,9 +250,9 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen> with SingleTi
           // Mileage Reminder (Optional)
           Text(
             'Mileage Reminder (Optional)',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: AppTheme.primaryWhite,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: AppTheme.primaryWhite),
           ),
           const SizedBox(height: 8),
           TextField(
@@ -279,9 +279,9 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen> with SingleTi
           // Description
           Text(
             'Description (Optional)',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: AppTheme.primaryWhite,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: AppTheme.primaryWhite),
           ),
           const SizedBox(height: 8),
           TextField(
@@ -357,16 +357,16 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen> with SingleTi
         title: const Text('Delete Reminder'),
         content: const Text('Are you sure you want to delete this reminder?'),
         actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: const Text('Cancel'),
-          ),
+          TextButton(onPressed: () => Get.back(), child: const Text('Cancel')),
           TextButton(
             onPressed: () {
               reminderController.deleteReminder(reminderId);
               Get.back();
             },
-            child: const Text('Delete', style: TextStyle(color: AppTheme.primaryRed)),
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: AppTheme.primaryRed),
+            ),
           ),
         ],
       ),
