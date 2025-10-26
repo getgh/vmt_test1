@@ -12,7 +12,8 @@ import '../widgets/maintenance_card.dart';
 class MaintenanceLogScreen extends StatefulWidget {
   final Vehicle vehicle;
 
-  const MaintenanceLogScreen({Key? key, required this.vehicle}) : super(key: key);
+  const MaintenanceLogScreen({Key? key, required this.vehicle})
+    : super(key: key);
 
   @override
   State<MaintenanceLogScreen> createState() => _MaintenanceLogScreenState();
@@ -44,10 +45,7 @@ class _MaintenanceLogScreenState extends State<MaintenanceLogScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Maintenance Logs'),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: const Text('Maintenance Logs'), elevation: 0),
       body: Obx(() {
         if (maintenanceController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
@@ -55,9 +53,7 @@ class _MaintenanceLogScreenState extends State<MaintenanceLogScreen> {
 
         return Stack(
           children: [
-            _isAddingLog
-                ? _buildAddMaintenanceForm()
-                : _buildMaintenanceList(),
+            _isAddingLog ? _buildAddMaintenanceForm() : _buildMaintenanceList(),
           ],
         );
       }),
@@ -75,7 +71,7 @@ class _MaintenanceLogScreenState extends State<MaintenanceLogScreen> {
   Widget _buildMaintenanceList() {
     return Obx(() {
       final logs = maintenanceController.maintenanceLogs;
-      
+
       if (logs.isEmpty) {
         return Center(
           child: Column(
@@ -90,9 +86,9 @@ class _MaintenanceLogScreenState extends State<MaintenanceLogScreen> {
               const SizedBox(height: 8),
               Text(
                 'Add your first maintenance record',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppTheme.darkGray,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: AppTheme.darkGray),
               ),
             ],
           ),
@@ -242,11 +238,17 @@ class _MaintenanceLogScreenState extends State<MaintenanceLogScreen> {
                         servicedBy: servicedBy.isEmpty ? null : servicedBy,
                         cost: cost,
                         description: description.isEmpty ? null : description,
-                        invoiceNumber: invoiceNumber.isEmpty ? null : invoiceNumber,
+                        invoiceNumber: invoiceNumber.isEmpty
+                            ? null
+                            : invoiceNumber,
                       );
-                      await maintenanceController.addMaintenanceLog(log, widget.vehicle);
-                      // Refresh expenses after adding maintenance log
-                      await expenseController.loadExpensesByVehicle(widget.vehicle.id);
+                      maintenanceController.addMaintenanceLog(
+                        log,
+                        widget.vehicle,
+                      );
+                      expenseController.loadExpensesByVehicle(
+                        widget.vehicle.id,
+                      );
                       setState(() => _isAddingLog = false);
                     },
                     child: const Text('Save'),
@@ -268,18 +270,20 @@ class _MaintenanceLogScreenState extends State<MaintenanceLogScreen> {
     Get.dialog(
       AlertDialog(
         title: const Text('Delete Log'),
-        content: const Text('Are you sure you want to delete this maintenance log?'),
+        content: const Text(
+          'Are you sure you want to delete this maintenance log?',
+        ),
         actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: const Text('Cancel'),
-          ),
+          TextButton(onPressed: () => Get.back(), child: const Text('Cancel')),
           TextButton(
             onPressed: () {
               maintenanceController.deleteMaintenanceLog(logId);
               Get.back();
             },
-            child: const Text('Delete', style: TextStyle(color: AppTheme.primaryRed)),
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: AppTheme.primaryRed),
+            ),
           ),
         ],
       ),

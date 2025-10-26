@@ -9,13 +9,15 @@ import '../widgets/expense_card.dart';
 class ExpenseTrackerScreen extends StatefulWidget {
   final Vehicle vehicle;
 
-  const ExpenseTrackerScreen({Key? key, required this.vehicle}) : super(key: key);
+  const ExpenseTrackerScreen({Key? key, required this.vehicle})
+    : super(key: key);
 
   @override
   State<ExpenseTrackerScreen> createState() => _ExpenseTrackerScreenState();
 }
 
-class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with SingleTickerProviderStateMixin {
+class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen>
+    with SingleTickerProviderStateMixin {
   final expenseController = Get.find<ExpenseController>();
   late TabController _tabController;
 
@@ -47,10 +49,7 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          _buildOverviewTab(),
-          _buildHistoryTab(),
-        ],
+        children: [_buildOverviewTab(), _buildHistoryTab()],
       ),
     );
   }
@@ -79,13 +78,13 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
   Widget _buildHistoryTab() {
     return Obx(() {
       final expenses = expenseController.expenses;
-      
+
       if (expenses.isEmpty) {
         return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.receipt_outline, size: 64, color: AppTheme.darkGray),
+              Icon(Icons.receipt_outlined, size: 64, color: AppTheme.darkGray),
               const SizedBox(height: 16),
               Text(
                 'No expenses recorded',
@@ -113,7 +112,9 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
                 Get.dialog(
                   AlertDialog(
                     title: const Text('Delete Expense'),
-                    content: const Text('Are you sure you want to delete this expense?'),
+                    content: const Text(
+                      'Are you sure you want to delete this expense?',
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () => Get.back(),
@@ -124,7 +125,10 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
                           expenseController.deleteExpense(expense.id);
                           Get.back();
                         },
-                        child: const Text('Delete', style: TextStyle(color: AppTheme.primaryRed)),
+                        child: const Text(
+                          'Delete',
+                          style: TextStyle(color: AppTheme.primaryRed),
+                        ),
                       ),
                     ],
                   ),
@@ -146,7 +150,10 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             gradient: LinearGradient(
-              colors: [AppTheme.primaryGreen, AppTheme.primaryGreen.withOpacity(0.7)],
+              colors: [
+                AppTheme.primaryGreen,
+                AppTheme.primaryGreen.withOpacity(0.7),
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -185,7 +192,7 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
   Widget _buildCategoryBreakdown() {
     return Obx(() {
       final categories = expenseController.expensesByCategory;
-      
+
       if (categories.isEmpty) {
         return const SizedBox();
       }
@@ -199,8 +206,9 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
           AppTheme.primaryBlack,
           AppTheme.darkGray,
         ];
-        final colorIndex = categories.keys.toList().indexOf(entry.key) % colors.length;
-        
+        final colorIndex =
+            categories.keys.toList().indexOf(entry.key) % colors.length;
+
         return PieChartSectionData(
           color: colors[colorIndex],
           value: entry.value,
@@ -228,9 +236,7 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
                 children: [
                   SizedBox(
                     height: 200,
-                    child: PieChart(
-                      PieChartData(sections: pieChartSections),
-                    ),
+                    child: PieChart(PieChartData(sections: pieChartSections)),
                   ),
                   const SizedBox(height: 24),
                   ...categories.entries.map((entry) {
@@ -240,8 +246,10 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
                       AppTheme.primaryBlack,
                       AppTheme.darkGray,
                     ];
-                    final colorIndex = categories.keys.toList().indexOf(entry.key) % colors.length;
-                    
+                    final colorIndex =
+                        categories.keys.toList().indexOf(entry.key) %
+                        colors.length;
+
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: Row(
@@ -266,10 +274,11 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
                           ),
                           Text(
                             '\$${entry.value.toStringAsFixed(2)}',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: colors[colorIndex],
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(
+                                  color: colors[colorIndex],
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ],
                       ),
@@ -306,11 +315,14 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
   Widget _buildMonthlyBarChart() {
     final now = DateTime.now();
     final monthlyData = <BarChartGroupData>[];
-    
+
     for (int i = 5; i >= 0; i--) {
       final date = DateTime(now.year, now.month - i, 1);
-      final amount = expenseController.getMonthlyExpenses(date.month, date.year);
-      
+      final amount = expenseController.getMonthlyExpenses(
+        date.month,
+        date.year,
+      );
+
       monthlyData.add(
         BarChartGroupData(
           x: 5 - i,
