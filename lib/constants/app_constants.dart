@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class AppConstants {
   // App Name
   static const String appName = 'Vehicle Maintenance Tracker';

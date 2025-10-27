@@ -218,7 +218,7 @@ class _MaintenanceLogScreenState extends State<MaintenanceLogScreen> {
             ),
             const SizedBox(height: 32),
 
-            // Action Buttons
+            // action
             Row(
               children: [
                 Expanded(
@@ -232,7 +232,7 @@ class _MaintenanceLogScreenState extends State<MaintenanceLogScreen> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       final log = MaintenanceLog(
                         id: const Uuid().v4(),
                         vehicleId: widget.vehicle.id,
@@ -245,7 +245,6 @@ class _MaintenanceLogScreenState extends State<MaintenanceLogScreen> {
                         invoiceNumber: invoiceNumber.isEmpty ? null : invoiceNumber,
                       );
                       await maintenanceController.addMaintenanceLog(log, widget.vehicle);
-                      // Refresh expenses after adding maintenance log
                       await expenseController.loadExpensesByVehicle(widget.vehicle.id);
                       setState(() => _isAddingLog = false);
                     },
