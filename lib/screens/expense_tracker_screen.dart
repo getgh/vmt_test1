@@ -65,11 +65,9 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
           _buildTotalExpensesCard(),
           const SizedBox(height: 24),
 
-          // Category Breakdown
           _buildCategoryBreakdown(),
           const SizedBox(height: 24),
 
-          // Monthly Expenses
           _buildMonthlyExpensesChart(),
         ],
       ),
@@ -85,7 +83,7 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.receipt_outline, size: 64, color: AppTheme.darkGray),
+              Icon(Icons.receipt, size: 64, color: AppTheme.darkGray),
               const SizedBox(height: 16),
               Text(
                 'No expenses recorded',
@@ -146,7 +144,7 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             gradient: LinearGradient(
-              colors: [AppTheme.primaryGreen, AppTheme.primaryGreen.withOpacity(0.7)],
+              colors: [AppTheme.primaryGreen, AppTheme.primaryGreen.withValues(alpha: 0.7)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -157,7 +155,7 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
               Text(
                 'Total Expenses',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppTheme.primaryWhite.withOpacity(0.9),
+                  color: AppTheme.primaryWhite.withValues(alpha: 0.9),
                 ),
               ),
               const SizedBox(height: 8),
@@ -172,7 +170,7 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen> with Single
               Text(
                 'Total maintenance expenses for ${widget.vehicle.displayName}',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppTheme.primaryWhite.withOpacity(0.8),
+                  color: AppTheme.primaryWhite.withValues(alpha: 0.8),
                 ),
               ),
             ],

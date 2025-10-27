@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import '../controllers/reminder_controller.dart';
-import '../controllers/vehicle_controller.dart';
 import '../models/vehicle.dart';
 import '../models/reminder.dart';
 import '../theme/app_theme.dart';
@@ -247,7 +246,7 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen> with SingleTi
           ),
           const SizedBox(height: 16),
 
-          // Mileage Reminder (Optional)
+          // Mileage Reminder - need to check further
           Text(
             'Mileage Reminder (Optional)',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -256,7 +255,7 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen> with SingleTi
           ),
           const SizedBox(height: 8),
           TextField(
-            style: const TextStyle(color: AppTheme.primaryWhite),
+            style: const TextStyle(color: Colors.black),
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               hintText: 'e.g., 10000 km',
@@ -276,7 +275,7 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen> with SingleTi
           ),
           const SizedBox(height: 16),
 
-          // Description
+          // description
           Text(
             'Description (Optional)',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -285,7 +284,7 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen> with SingleTi
           ),
           const SizedBox(height: 8),
           TextField(
-            style: const TextStyle(color: AppTheme.primaryWhite),
+            style: const TextStyle(color: Colors.black),
             maxLines: 3,
             decoration: InputDecoration(
               hintText: 'Additional details...',

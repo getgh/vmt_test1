@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:uuid/uuid.dart';
 import '../controllers/vehicle_controller.dart';
-import '../models/vehicle.dart';
 import '../theme/app_theme.dart';
 import '../widgets/vehicle_card.dart';
 import 'vehicle_info_screen.dart';
