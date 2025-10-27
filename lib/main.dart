@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:vehicle_maintenance_tracker/constants/app_constants.dart';
 import 'models/vehicle.dart';
 import 'models/maintenance_log.dart';
 import 'models/reminder.dart';
@@ -11,20 +12,17 @@ import 'theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive
   await Hive.initFlutter();
 
-  // Register Hive adapters
   Hive.registerAdapter(VehicleAdapter());
   Hive.registerAdapter(MaintenanceLogAdapter());
   Hive.registerAdapter(ReminderAdapter());
   Hive.registerAdapter(ExpenseAdapter());
 
-  // Open boxes
-  await Hive.openBox<Vehicle>('vehicles');
-  await Hive.openBox<MaintenanceLog>('maintenance_logs');
-  await Hive.openBox<Reminder>('reminders');
-  await Hive.openBox<Expense>('expenses');
+  await Hive.openBox<Vehicle>(AppConstants.vehiclesBoxName);
+  await Hive.openBox<MaintenanceLog>(AppConstants.maintenanceLogsBoxName);
+  await Hive.openBox<Reminder>(AppConstants.remindersBoxName);
+  await Hive.openBox<Expense>(AppConstants.expensesBoxName);
 
   runApp(const MyApp());
 }
