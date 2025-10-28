@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart' show debugPrint;
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 import '../models/maintenance_log.dart';
@@ -7,7 +8,7 @@ import '../services/database_service.dart';
 
 class MaintenanceController extends GetxController {
   final DatabaseService _dbService = DatabaseService();
-  
+
   final RxList<MaintenanceLog> maintenanceLogs = <MaintenanceLog>[].obs;
   final RxBool isLoading = false.obs;
 
@@ -28,7 +29,7 @@ class MaintenanceController extends GetxController {
       await _dbService.addMaintenanceLog(log);
       maintenanceLogs.add(log);
       maintenanceLogs.sort((a, b) => b.serviceDate.compareTo(a.serviceDate));
-      
+
       // Create an expense if cost is provided
       if (log.cost != null && log.cost! > 0) {
         final expense = Expense(
@@ -41,15 +42,15 @@ class MaintenanceController extends GetxController {
           notes: log.description,
         );
         await _dbService.addExpense(expense);
-        print('Created expense for maintenance log: ${expense.amount}');
+        debugPrint('Created expense for maintenance log: ${expense.amount}');
       }
-      
+
       // Update vehicle mileage if the new mileage is higher
       if (log.mileage > vehicle.currentMileage) {
         vehicle.currentMileage = log.mileage;
         await _dbService.updateVehicle(vehicle);
       }
-      
+
       Get.snackbar('Success', 'Maintenance log added successfully');
     } catch (e) {
       Get.snackbar('Error', 'Failed to add maintenance log: $e');
@@ -67,13 +68,13 @@ class MaintenanceController extends GetxController {
         maintenanceLogs[index] = log;
         maintenanceLogs.sort((a, b) => b.serviceDate.compareTo(a.serviceDate));
       }
-      
+
       // Update vehicle mileage if the new mileage is higher
       if (log.mileage > vehicle.currentMileage) {
         vehicle.currentMileage = log.mileage;
         await _dbService.updateVehicle(vehicle);
       }
-      
+
       Get.snackbar('Success', 'Maintenance log updated successfully');
     } catch (e) {
       Get.snackbar('Error', 'Failed to update maintenance log: $e');
@@ -95,8 +96,12 @@ class MaintenanceController extends GetxController {
     }
   }
 
-  List<MaintenanceLog> getMaintenanceLogsByType(String vehicleId, String serviceType) {
-    return _dbService.getMaintenanceLogsByVehicle(vehicleId)
+  List<MaintenanceLog> getMaintenanceLogsByType(
+    String vehicleId,
+    String serviceType,
+  ) {
+    return _dbService
+        .getMaintenanceLogsByVehicle(vehicleId)
         .where((log) => log.serviceType == serviceType)
         .toList();
   }

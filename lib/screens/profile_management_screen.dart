@@ -6,10 +6,11 @@ import '../widgets/vehicle_card.dart';
 import 'vehicle_info_screen.dart';
 
 class ProfileManagementScreen extends StatefulWidget {
-  const ProfileManagementScreen({Key? key}) : super(key: key);
+  const ProfileManagementScreen({super.key});
 
   @override
-  State<ProfileManagementScreen> createState() => _ProfileManagementScreenState();
+  State<ProfileManagementScreen> createState() =>
+      _ProfileManagementScreenState();
 }
 
 class _ProfileManagementScreenState extends State<ProfileManagementScreen> {
@@ -18,12 +19,10 @@ class _ProfileManagementScreenState extends State<ProfileManagementScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Vehicles'),
-      ),
+      appBar: AppBar(title: const Text('My Vehicles')),
       body: Obx(() {
         final vehicles = vehicleController.vehicles;
-        
+
         return SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -36,9 +35,9 @@ class _ProfileManagementScreenState extends State<ProfileManagementScreen> {
               const SizedBox(height: 16),
               Text(
                 'Total Vehicles: ${vehicles.length}',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppTheme.darkGray,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: AppTheme.darkGray),
               ),
               const SizedBox(height: 24),
 
@@ -65,7 +64,8 @@ class _ProfileManagementScreenState extends State<ProfileManagementScreen> {
                       ),
                       const SizedBox(height: 24),
                       ElevatedButton.icon(
-                        onPressed: () => Get.to(() => const VehicleInfoScreen()),
+                        onPressed: () =>
+                            Get.to(() => const VehicleInfoScreen()),
                         icon: const Icon(Icons.add),
                         label: const Text('Add Vehicle'),
                       ),
@@ -110,7 +110,9 @@ class _ProfileManagementScreenState extends State<ProfileManagementScreen> {
                                   },
                                   child: const Text(
                                     'Delete',
-                                    style: TextStyle(color: AppTheme.primaryRed),
+                                    style: TextStyle(
+                                      color: AppTheme.primaryRed,
+                                    ),
                                   ),
                                 ),
                               ],

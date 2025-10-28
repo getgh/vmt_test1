@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart' show debugPrint;
 import 'package:get/get.dart';
 import '../models/reminder.dart';
 import '../services/database_service.dart';
 
 class ReminderController extends GetxController {
   final DatabaseService _dbService = DatabaseService();
-  
+
   final RxList<Reminder> reminders = <Reminder>[].obs;
   final RxList<Reminder> upcomingReminders = <Reminder>[].obs;
   final RxList<Reminder> overdueReminders = <Reminder>[].obs;
@@ -17,26 +18,28 @@ class ReminderController extends GetxController {
       overdueReminders.value = [];
       return;
     }
-    
+
     try {
       isLoading.value = true;
       final allReminders = _dbService.getRemindersByVehicle(vehicleId);
       reminders.value = allReminders;
-      
+
       // Calculate upcoming and overdue
       final now = DateTime.now();
-      upcomingReminders.value = allReminders
-          .where((reminder) =>
-              reminder.isActive &&
-              reminder.reminderDate.isAfter(now))
-          .toList()
-          ..sort((a, b) => a.reminderDate.compareTo(b.reminderDate));
-      
+      upcomingReminders.value =
+          allReminders
+              .where(
+                (reminder) =>
+                    reminder.isActive && reminder.reminderDate.isAfter(now),
+              )
+              .toList()
+            ..sort((a, b) => a.reminderDate.compareTo(b.reminderDate));
+
       overdueReminders.value = allReminders
           .where((reminder) => reminder.isOverdue)
           .toList();
     } catch (e) {
-      print('Error loading reminders: $e');
+      debugPrint('Error loading reminders: $e');
       reminders.value = [];
       upcomingReminders.value = [];
       overdueReminders.value = [];
@@ -112,13 +115,15 @@ class ReminderController extends GetxController {
   void _updateReminderLists() {
     // Update upcoming reminders
     final now = DateTime.now();
-    upcomingReminders.value = reminders
-        .where((reminder) =>
-            reminder.isActive &&
-            reminder.reminderDate.isAfter(now))
-        .toList()
-        ..sort((a, b) => a.reminderDate.compareTo(b.reminderDate));
-    
+    upcomingReminders.value =
+        reminders
+            .where(
+              (reminder) =>
+                  reminder.isActive && reminder.reminderDate.isAfter(now),
+            )
+            .toList()
+          ..sort((a, b) => a.reminderDate.compareTo(b.reminderDate));
+
     // Update overdue reminders
     overdueReminders.value = reminders
         .where((reminder) => reminder.isOverdue)

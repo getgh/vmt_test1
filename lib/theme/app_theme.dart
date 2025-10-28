@@ -15,7 +15,7 @@ class AppTheme {
       brightness: Brightness.light,
       primaryColor: primaryRed,
       scaffoldBackgroundColor: primaryWhite,
-      
+
       // AppBar Theme
       appBarTheme: const AppBarTheme(
         backgroundColor: primaryBlack,
@@ -23,35 +23,31 @@ class AppTheme {
         elevation: 2,
         centerTitle: true,
       ),
-      
+
       // FloatingActionButton Theme
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: primaryGreen,
         foregroundColor: primaryWhite,
       ),
-      
+
       // Button Themes
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryGreen,
           foregroundColor: primaryWhite,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
-      
+
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: primaryRed,
           side: const BorderSide(color: primaryRed),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
-      
+
       // TextField Theme
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -73,19 +69,20 @@ class AppTheme {
           borderSide: const BorderSide(color: primaryRed, width: 1),
         ),
         hintStyle: const TextStyle(color: darkGray),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
       ),
-      
+
       // Card Theme
       cardTheme: CardThemeData(
         color: primaryWhite,
         elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
-      
+
       // Text Themes
       textTheme: const TextTheme(
         displayLarge: TextStyle(
@@ -108,16 +105,10 @@ class AppTheme {
           fontWeight: FontWeight.w600,
           color: primaryBlack,
         ),
-        bodyMedium: TextStyle(
-          fontSize: 14,
-          color: primaryBlack,
-        ),
-        bodySmall: TextStyle(
-          fontSize: 12,
-          color: darkGray,
-        ),
+        bodyMedium: TextStyle(fontSize: 14, color: primaryBlack),
+        bodySmall: TextStyle(fontSize: 12, color: darkGray),
       ),
-      
+
       // Switch Theme
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith((states) {
@@ -133,12 +124,9 @@ class AppTheme {
           return darkGray.withValues(alpha: 0.3);
         }),
       ),
-      
+
       // Divider Theme
-      dividerTheme: const DividerThemeData(
-        color: lightGray,
-        thickness: 1,
-      ),
+      dividerTheme: const DividerThemeData(color: lightGray, thickness: 1),
     );
   }
 }

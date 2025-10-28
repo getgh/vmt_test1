@@ -10,14 +10,14 @@ class ExpenseCard extends StatelessWidget {
   final VoidCallback? onDelete;
 
   const ExpenseCard({
-    Key? key,
+    super.key,
     required this.category,
     required this.amount,
     required this.expenseDate,
     this.paymentMethod,
     required this.onTap,
     this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,10 @@ class ExpenseCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: AppTheme.primaryGreen.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(4),
@@ -82,7 +85,10 @@ class ExpenseCard extends StatelessWidget {
                       width: 24,
                       height: 24,
                       child: IconButton(
-                        icon: const Icon(Icons.delete_outline, color: AppTheme.primaryRed),
+                        icon: const Icon(
+                          Icons.delete_outline,
+                          color: AppTheme.primaryRed,
+                        ),
                         iconSize: 18,
                         padding: EdgeInsets.zero,
                         onPressed: onDelete,
