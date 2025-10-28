@@ -247,7 +247,7 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen>
           ),
           const SizedBox(height: 16),
 
-          // Mileage Reminder (Optional)
+          // Mileage Reminder - need to check further
           Text(
             'Mileage Reminder (Optional)',
             style: Theme.of(
@@ -256,7 +256,7 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen>
           ),
           const SizedBox(height: 8),
           TextField(
-            style: const TextStyle(color: AppTheme.primaryWhite),
+            style: const TextStyle(color: Colors.black),
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               hintText: 'e.g., 10000 km',
@@ -276,7 +276,7 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen>
           ),
           const SizedBox(height: 16),
 
-          // Description
+          // description
           Text(
             'Description (Optional)',
             style: Theme.of(
@@ -285,7 +285,7 @@ class _ReminderSetupScreenState extends State<ReminderSetupScreen>
           ),
           const SizedBox(height: 8),
           TextField(
-            style: const TextStyle(color: AppTheme.primaryWhite),
+            style: const TextStyle(color: Colors.black),
             maxLines: 3,
             decoration: InputDecoration(
               hintText: 'Additional details...',

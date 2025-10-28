@@ -48,7 +48,7 @@ class MaintenanceCard extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: AppTheme.primaryRed.withOpacity(0.1),
+                            color: AppTheme.primaryRed.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(

@@ -34,7 +34,7 @@ class ReminderCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: color, width: 2),
             color: isOverdue
-                ? AppTheme.primaryRed.withOpacity(0.05)
+                ? AppTheme.primaryRed.withValues(alpha: 0.05)
                 : AppTheme.primaryWhite,
           ),
           child: Column(

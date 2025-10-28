@@ -43,7 +43,7 @@ class ExpenseCard extends StatelessWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: AppTheme.primaryGreen.withOpacity(0.1),
+                        color: AppTheme.primaryGreen.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(

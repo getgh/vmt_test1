@@ -63,11 +63,9 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen>
           _buildTotalExpensesCard(),
           const SizedBox(height: 24),
 
-          // Category Breakdown
           _buildCategoryBreakdown(),
           const SizedBox(height: 24),
 
-          // Monthly Expenses
           _buildMonthlyExpensesChart(),
         ],
       ),
@@ -151,7 +149,7 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen>
             gradient: LinearGradient(
               colors: [
                 AppTheme.primaryGreen,
-                AppTheme.primaryGreen.withOpacity(0.7),
+                AppTheme.primaryGreen.withValues(alpha: 0.7),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -163,7 +161,7 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen>
               Text(
                 'Total Expenses',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppTheme.primaryWhite.withOpacity(0.9),
+                  color: AppTheme.primaryWhite.withValues(alpha: 0.9),
                 ),
               ),
               const SizedBox(height: 8),
@@ -178,7 +176,7 @@ class _ExpenseTrackerScreenState extends State<ExpenseTrackerScreen>
               Text(
                 'Total maintenance expenses for ${widget.vehicle.displayName}',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppTheme.primaryWhite.withOpacity(0.8),
+                  color: AppTheme.primaryWhite.withValues(alpha: 0.8),
                 ),
               ),
             ],

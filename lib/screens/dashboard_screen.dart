@@ -28,11 +28,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    // Defer loading to next frame to ensure selectedVehicle is set
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshDashboard();
-
-      // Listen for vehicle changes
       vehicleController.selectedVehicle.listen((vehicle) {
         if (vehicle != null) {
           debugPrint('Vehicle changed to ${vehicle.id}, refreshing expenses');
@@ -108,7 +105,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Vehicle Selector
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -137,7 +133,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const SizedBox(height: 24),
 
-                // Selected Vehicle Card
+                // Selected Vehicle
                 GestureDetector(
                   onTap: () => Get.to(
                     () => VehicleInfoScreen(vehicle: vehicle),
@@ -151,7 +147,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         gradient: LinearGradient(
                           colors: [
                             AppTheme.primaryBlack,
-                            AppTheme.primaryBlack.withOpacity(0.8),
+                            AppTheme.primaryBlack.withValues(alpha: 0.8),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -177,7 +173,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     style: Theme.of(context).textTheme.bodySmall
                                         ?.copyWith(
                                           color: AppTheme.primaryWhite
-                                              .withOpacity(0.7),
+                                              .withValues(alpha: 0.7),
                                         ),
                                   ),
                                   Text(
@@ -199,7 +195,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     style: Theme.of(context).textTheme.bodySmall
                                         ?.copyWith(
                                           color: AppTheme.primaryWhite
-                                              .withOpacity(0.7),
+                                              .withValues(alpha: 0.7),
                                         ),
                                   ),
                                   Text(
@@ -222,7 +218,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const SizedBox(height: 24),
 
-                // Upcoming Reminders Section
+                // Upcoming Reminders
                 _buildSection(
                   context,
                   title: 'Upcoming Reminders',
@@ -267,7 +263,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const SizedBox(height: 24),
 
-                // Recent Maintenance Section
+                // Recent Maintenance
                 _buildSection(
                   context,
                   title: 'Recent Maintenance',
@@ -310,7 +306,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const SizedBox(height: 24),
 
-                // Expenses Summary Section
                 _buildExpensesSummary(context),
                 const SizedBox(height: 24),
               ],

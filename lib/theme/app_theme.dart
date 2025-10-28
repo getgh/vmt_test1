@@ -119,9 +119,9 @@ class AppTheme {
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return primaryGreen.withOpacity(0.5);
+            return primaryGreen.withValues(alpha: 0.5);
           }
-          return darkGray.withOpacity(0.3);
+          return darkGray.withValues(alpha: 0.3);
         }),
       ),
 
